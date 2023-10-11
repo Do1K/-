@@ -13,8 +13,14 @@ public class RandomMachine {
     private List<Integer> answer = new ArrayList<>();
 
     public List<Integer> createRandomAnswer(){
-        for(int i=MIN; i<MAX_DIGIT;i++){
-            answer.add(pickNumberInRange(MIN,MAX));
+        int i=0;
+        while(i<MAX_DIGIT){
+            int number=pickNumberInRange(MIN,MAX);
+            if(!answer.contains(number)){
+                answer.add(number);
+                i++;
+            }
+
         }
 
         return answer;

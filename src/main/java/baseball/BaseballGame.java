@@ -10,11 +10,11 @@ public class BaseballGame {
 
     private static final int COMPLETE=3;
     private static final int STRIKE=0;
-    private static final int BALL=0;
+    private static final int BALL=1;
     private List<Integer> answer=new ArrayList<>();
 
     private List<Integer> userAnswer=new ArrayList<>();
-    private int[] result=new int[2];
+    private int[] result;
     private int strike;
     private int ball;
 
@@ -40,8 +40,8 @@ public class BaseballGame {
         stream.forEach(number->this.userAnswer.add(number));
 
         result=callComparator(userAnswer);
-        strike = result[0];
-        ball = result[1];
+        strike = result[STRIKE];
+        ball = result[BALL];
         judgeStrike();
 
     }
@@ -63,14 +63,19 @@ public class BaseballGame {
     }
 
     private void printBoard(){
-        if(result[STRIKE]!=0 && result[BALL]!=0){
-            System.out.println(ball+"볼 "+strike+"스트라이크");
-            return;
+        if(result[STRIKE]!=0 && result[BALL]!=0) {
+            System.out.println(ball + "볼 " + strike + "스트라이크1");
+
         }else if(result[STRIKE]!=0 && result[BALL]==0){
             System.out.println(strike+"스트라이크");
-            return;
+
+        }else if(result[STRIKE]==0 && result[BALL]!=0){
+            System.out.println(ball+"볼");
+
+        }else{
+            System.out.println("낫싱");
         }
-        System.out.println(ball+"볼");
+
     }
 
     public boolean isCorrect(){
@@ -84,7 +89,13 @@ public class BaseballGame {
         }else if(strCommand.equals("2")){
             return false;
         }
-        throw new IllegalArgumentException("잘못된 값이 입력되었습니다.");
+        throw new IllegalArgumentException();
+    }
+
+    public void printAll(){
+        System.out.println(strike+","+ball);
+        Stream<Integer> stream=answer.stream();
+        stream.forEach(item->System.out.println(item));
     }
 
 
