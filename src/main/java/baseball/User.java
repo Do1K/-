@@ -9,27 +9,44 @@ import java.util.List;
 public class User {
 
     private static final int MIN=0;
-    private static final int MAX_DIGIT=3;
+    private static final int MAX_BALLS=3;
+    private static final int TO_DIVIDE=10;
+
+    private String initUserAnswer;
     private List<Integer> userAnswer=new ArrayList<>();
 
-    public  boolean answerInput(BaseballGame baseballGame){
+    public  void answerInput(BaseballGame baseballGame){
 
-        String strAnswer= Console.readLine();
-        StringBuffer sb = new StringBuffer(strAnswer);
-        String reverseAnswer = sb.reverse().toString();
-        if(strAnswer.length()==MAX_DIGIT){
-            int intAnswer=Integer.parseInt(reverseAnswer);
-            for(int i=MIN;i<MAX_DIGIT;i++){
-                int remain=intAnswer%10;
-                userAnswer.add(remain);
-                intAnswer=intAnswer/10;
-            }
-            baseballGame.receiveUserAnswer((ArrayList<Integer>) userAnswer);
-            userAnswer.clear();
-            return true;
+        Balls balls;
+        initUserAnswer= Console.readLine();
+        addAnswerToList(reverseString(initUserAnswer));
+        balls = validateBalls((ArrayList<Integer>) userAnswer);
+        sendUserAnswer(balls,baseballGame);
+
+    }
+
+    public String reverseString(String initUserAnswer){
+        StringBuffer sb = new StringBuffer(initUserAnswer);
+        String strUserAnswer=sb.reverse().toString();
+        return strUserAnswer;
+    }
+
+    public void addAnswerToList(String strUserAnswer){
+        Integer intUserAnswer=Integer.parseInt(strUserAnswer);
+        for(int i=MIN;i<strUserAnswer.length();i++){
+            int remain=intUserAnswer%TO_DIVIDE;
+            userAnswer.add(remain);
+            intUserAnswer=intUserAnswer/TO_DIVIDE;
         }
-        throw new IllegalArgumentException();
 
+    }
+
+    public Balls validateBalls(ArrayList<Integer> userAnswer) {
+        return new Balls(userAnswer);
+    }
+
+    public void sendUserAnswer(Balls balls, BaseballGame baseballGame) {
+        baseballGame.receiveUserAnswer(balls);
     }
 
 }
